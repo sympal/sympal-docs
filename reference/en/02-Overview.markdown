@@ -36,7 +36,7 @@ The type model is automatically instantiated and added as a relationship.
 In the above example, the `sfSympalContent` record will have a one-to-one
 relationship with an `sfSympalPage` record.
 
-[asset:content_model_diagram]
+[asset:documentation-1-0-content-model-diagram]
 
 With some magic, the properties/fields of the content type model
 can be accessed from the content record. For example the `sfSympalPage`
@@ -92,7 +92,7 @@ content template.
 ## Menu Structure
 
 The menu system in Sympal consists of one model named `sfSympalMenuItem`
-and is included in the `sfSympalMenuPlugin`. It is a normal Doctrine model
+and is included in tse `sfSympalMenuPlugin`. It is a normal Doctrine model
 with the `NestedSet` behavior enabled. This behavior gives us the functionality
 needed to describe the hierarchy of our sites menus. Each `sfSympalMenuItem`
 instance can map to a content record which allows each menu item to easily
