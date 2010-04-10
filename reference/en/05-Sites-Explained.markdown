@@ -5,21 +5,11 @@ each one has its own sitemap, content, layouts, etc. With Sympal this is made
 easy as all the data is organized per site in the database. This allows us to 
 manage data for the current site or other sites.
 
-For each Sympal site that exists, a matching Symfony application must exist as 
-well. For example the default installation data fixtures create a site named 
-"sympal", so it assumes that their is an application created with the same name.
-
-    [php]
-    // project/web/index.php
-    
-    require_once(dirname(__FILE__).'/../config/ProjectConfiguration.class.php');
-
-    $configuration = ProjectConfiguration::getApplicationConfiguration('sympal', 'prod', false);
-    sfContext::createInstance($configuration)->dispatch();
-
-> **NOTE**
-> Notice how the first argument given to `getApplicationConfiguration` is the 
-> same as our application name, `sympal`.
+For each sympal site that exists, a matching symfony application must exist as 
+well. When installing sympal, an sfSympalSite record is automatically added
+for you. The name of the site, which must match the name of your symfony
+application, will be automatically set to the first application found in
+the `apps` directory.
 
 ## Queries
 
