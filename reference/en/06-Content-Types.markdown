@@ -18,7 +18,10 @@ command.
 
 ## Default Schema
 
-A content type is simple, the only requirement is that you enable the model behavior named, `sfSympalContentType`. If you take a look at the generated code in your plugins directory inside the `sfSympalArticlePlugin` directory you will see a `config/doctrine/schema.yml` that looks like the following.
+A content type is simple, the only requirement is that you enable the model
+behavior named, `sfSympalContentType`. If you take a look at the generated
+code in your plugins directory inside the `sfSympalArticlePlugin` directory
+you will see a `config/doctrine/schema.yml` that looks like the following.
 
     [yml]
     Article:
@@ -28,9 +31,9 @@ A content type is simple, the only requirement is that you enable the model beha
         body: clob
 
 > **NOTE**
-> Notice how we have the `sfSympalContentType` behavior enabled. This is how 
-> Sympal knows that the model is a content type and not just a regular Doctrine
-> model.
+> Notice how we have the `sfSympalContentType` behavior enabled. This is
+> how Sympal knows that the model is a content type and not just a regular
+> Doctrine model.
 
 The addition of the behavior above does a few things:
 
@@ -93,8 +96,8 @@ this schema and make it fit the needs of your content type. So lets modify the
         excerpt: string(500)
         body: clob
 
-Now if you re-run the installation process for the plugin it will re-install the
-plugin with the changes you made.
+Now if you re-run the installation process for the plugin it will re-install
+the plugin with the changes you made.
 
     $ php symfony sympal:plugin-install Article
 
@@ -102,10 +105,11 @@ plugin with the changes you made.
 
 When you create a new content type, we try and automate the installation 
 initially but this is just to help you get started fast. You can easily 
-customize the installation by creating a custom install class named after your 
-plugin.
+customize the installation by creating a custom install class named after
+your plugin.
 
-Creating a new file in `sfSympalArticlePlugin/lib` named `sfSympalArticlePluginInstall` that extends `sfSympalPluginManagerInstall`.
+Creating a new file in `sfSympalArticlePlugin/lib` named
+`sfSympalArticlePluginInstall` that extends `sfSympalPluginManagerInstall`.
 
 > **NOTE**
 > We are extending the base installation class that gets used if you run the
@@ -120,17 +124,19 @@ Creating a new file in `sfSympalArticlePlugin/lib` named `sfSympalArticlePluginI
       }
     }
 
-You will notice above how the `customInstall()` method accepts a variable that
-is an array containing the unsaved objects that would have been inserted in to
-the database had you not created the `customInstall()` method. Now it is up to 
-the developer of the plugin what to insert and what other code to perform when a plugin is installed.
+You will notice above how the `customInstall()` method accepts a variable
+that is an array containing the unsaved objects that would have been inserted
+in to the database had you not created the `customInstall()` method. Now
+it is up to  the developer of the plugin what to insert and what other code
+to perform when a plugin is installed.
 
-First lets customize the default `Article` content record that is inserted when 
-installed. We want to set the `category` and `excerpt` properties.
+First lets customize the default `Article` content record that is inserted
+when  installed. We want to set the `category` and `excerpt` properties.
 
 > **NOTE**
-> The `customInstall()` method can also be placed in the configuration for the
-> plugin. In this example you could place it in the `sfSympalArticlePluginConfiguration` class in `sfSympalArticlePlugin/config`.
+> The `customInstall()` method can also be placed in the configuration
+> for the plugin. In this example you could place it in the
+> `sfSympalArticlePluginConfiguration` class in `sfSympalArticlePlugin/config`.
 
     [php]
     class sfSympalArticlePluginInstall extends sfSympalPluginManagerInstall
@@ -145,8 +151,8 @@ installed. We want to set the `category` and `excerpt` properties.
       }
     }
 
-Now we'll add the code to save some of the default records that we don't need to 
-modify before saving.
+Now we'll add the code to save some of the default records that we don't
+need to modify before saving.
 
     [php]
     class sfSympalArticlePluginInstall extends sfSympalPluginManagerInstall
@@ -163,25 +169,27 @@ modify before saving.
       }
     }
 
-Now we can re-run our install for the `Article` plugin and our `customInstall()` method will be invoked.
+Now we can re-run our install for the `Article` plugin and our `customInstall()`
+method will be invoked.
 
 ## Default Uninstall
 
-When you run the uninstall process for a Sympal plugin and it contains a content
-type then all related records in the database will be deleted. This means the 
-content type record, templates, menu items, and any actual content records. 
-After all data has been deleted then any tables the plugin introduce will be 
-dropped from the database.
+When you run the uninstall process for a Sympal plugin and it contains a
+content type then all related records in the database will be deleted. This
+means the content type record, templates, menu items, and any actual content
+records. After all data has been deleted then any tables the plugin introduce
+will be dropped from the database.
 
     php symfony sympal:plugin-uninstall Article
 
-You can also pass the `--delete` option to also delete all files and remove the plugin from your project entirely.
+You can also pass the `--delete` option to also delete all files and remove
+the plugin from your project entirely.
 
 ## Customizing Uninstall
 
-Customizing the uninstall process of a Sympal plugin is the same as the install.
-You just need to create a class named `sfSympalArticlePluginUninstall` in the 
-same location as the install class.
+Customizing the uninstall process of a Sympal plugin is the same as the
+install. You just need to create a class named `sfSympalArticlePluginUninstall`
+in the same location as the install class.
 
     [php]
     class sfSympalArticlePluginUninstall extends sfSympalPluginManagerUninstall
@@ -193,9 +201,10 @@ same location as the install class.
     }
 
 > **NOTE**
-> Just like the `customInstall()`, the `customUninstall()` method can be placed 
-> in your `ProjectConfiguration` class.
+> Just like the `customInstall()`, the `customUninstall()` method can be
+> placed in your `ProjectConfiguration` class.
 
-Now if you run the uninstall process for the `Article` plugin, the `customUninstall()` method will be invoked.
+Now if you run the uninstall process for the `Article` plugin, the
+`customUninstall()` method will be invoked.
 
     $ php symfony sympal:plugin-uninstall Article
