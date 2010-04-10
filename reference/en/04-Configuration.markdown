@@ -1,10 +1,11 @@
-Everything in Sympal was designed to be as configurable as possible. This is why 
-the `sfSympalConfig` class was introduced. It is an extension of `sfConfig` 
-made specifically for Sympal.
+Everything in Sympal was designed to be as configurable as possible. This
+is why  the `sfSympalConfig` class was introduced. It is an extension of
+`sfConfig` made specifically for Sympal.
 
-The configuration values are organized in to groups so that groups of configurations
-can be specified. This is useful if a Sympal plugin introduces several new configurations
-then they will be all in one group and won't be all grouped together.
+The configuration values are organized in to groups so that groups of
+configurations can be specified. This is useful if a Sympal plugin introduces
+several new configurations then they will be all in one group and won't be
+all grouped together.
 
 ## Manipulating
 
@@ -27,18 +28,19 @@ Getting Sympal configuration values is also the same as `sfConfig`:
 
 ### Writing
 
-You can write new settings to disk by using the `writeSetting` method. The arguments
-for this method are the same as the `set` method the only difference is that the value
-is set in memory but it is also written to disk so that it is remembered.
+You can write new settings to disk by using the `writeSetting` method.
+The arguments for this method are the same as the `set` method the only
+difference is that the value is set in memory but it is also written to
+disk so that it is remembered.
 
     [php]
     sfSympalConfig::writeSetting('installed', true);
 
 ### Groups
 
-Sympal configuration can be organized in to groups. Up until now we've only worked 
-with root level configurations but now we'll show you how to set and get values from 
-a group.
+Sympal configuration can be organized in to groups. Up until now we've
+only worked with root level configurations but now we'll show you how to
+set and get values from a group.
 
     [php]
     sfSympalConfig::set('new_group', 'name', 'value');
@@ -52,11 +54,13 @@ You can also specify default values in the same way you do for `sfConfig`.
 
 ## Configuration Files
 
-All of the values for `sfSympalConfig` can have default values specified by the 
-`app.yml`. If you are already familiar with Symfony then you should know what this
-is. The `app.yml` is where all project specific configuration can be stored and
-accessed from `sfConfig`. All of the Sympal configuration values are stored under 
-the key named `sympal_settings`. Below is an example where we change some of the default values set by Sympal in our `config/app.yml` file:
+All of the values for `sfSympalConfig` can have default values specified
+by the `app.yml`. If you are already familiar with Symfony then you should
+know what this is. The `app.yml` is where all project specific configuration
+can be stored and accessed from `sfConfig`. All of the Sympal configuration
+values are stored under the key named `sympal_settings`. Below is an example
+where we change some of the default values set by Sympal in our
+`config/app.yml` file:
 
     [yml]
     all:
@@ -75,18 +79,19 @@ the key named `sympal_settings`. Below is an example where we change some of the
 
 ## Web Editable Configuration
 
-Some of these configuration values are things that can be changed and modified after
-Sympal has been installed. In the case of these values you may want to allow them
-to be edited from within Sympal in your browser.
+Some of these configuration values are things that can be changed and
+modified after Sympal has been installed. In the case of these values you
+may want to allow them to be edited from within Sympal in your browser.
 
-If you login to Sympal as an administrator and browse to **Administrator > Configuration**, 
-you will see a form that lets you edit certain configuration values.
+If you login to Sympal as an administrator and browse to
+**Administrator > Configuration**, you will see a form that lets you edit
+certain configuration values.
 
 [asset:48]
 
-This form is dynamically built through the firing of an event named `sympal.load_config_form`. 
-You can connect to this event from anywhere and add new editable configurations 
-to the form. Below is an example.
+This form is dynamically built through the firing of an event named
+`sympal.load_config_form`. You can connect to this event from anywhere and
+add new editable configurations to the form. Below is an example.
 
     [php]
     $dispatcher->connect('sympal.load_config_form', array($this, 'loadConfig'));
