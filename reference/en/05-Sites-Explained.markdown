@@ -16,12 +16,15 @@ the `apps` directory.
 
 When you are viewing the content of a site, the query for viewing content is 
 automatically altered to include the conditions to limit it to show only
-the data from that site.
+the data from that site. In other words, while the `sfSympalContent` model
+may contain records from multiple sites, the query is automatically altered
+so that only the current site's content records are returned.
 
 ## Creating New Site
 
 Creating a new site is as easy as executing a few tasks from the command line.
-First we need to generate a new application to create our site for:
+First we need to generate a new application for our site:. This is done
+using the following stock symfony task:
 
     $ php symfony generate:app my_new_site
 
@@ -32,51 +35,51 @@ Now we can create a site for it:
 Now you can navigate to `my_new_site_dev.php` from your browser and you will
 see a blank Sympal site ready for you to work with.
 
-## Getting Current Site
+> **NOTE**
+> In reality, very little needs to be done to "prepare" an application to
+> be a sympal site. The `sympal:create-site` task merely creates the necessary
+> `sfSympalSite` record, changes the `myUser` class to extend `sfSympalUser`
+> and removes the `homepage`, `default` and `default_index` routes from
+> routing.yml.
 
-When you are developing in Sympal you'll often want to know what the current
+## Retrieving the Current Site
+
+When you are developing in sympal you'll often need to know what the current
 site is. This information can be easily retrieved.
 
-Since the Sympal sites are bound to Symfony applications, we can know the
-slug of the site by using the `sf_app` config value.
+Since each sympal site is bound to a symfony application, we can determine the
+`slug` of the site by using the `sf_app` config value.
 
     [php]
     $siteSlug = sfConfig::get('sf_app');
 
-We can also retrieve this same value from the Sympal context.
+We can also retrieve this same value from sympal's service container.
 
     [php]
-    $siteSlug = sfSympalContext::getInstance()->getSite();
+    $siteRecord = sfSympalContext::getInstance()->getService('site_manager')->getSite();
 
-You may want to just go ahead and get the record for the site too.
-
-    [php]
-    $site = sfSympalContext::getInstance()->getSiteRecord();
-    echo $site->name;
-    print_r($site->toArray());
-
-## Site Layout
-
-Changing the layout a site should use is very easy. First, you can set the
-`default_layout` setting with `sfSympalConfig`:
+Additionally, the site record is always available in the template:
 
     [php]
-    sfSympalConfig::set('default_layout', 'my_layout');
+    echo $sf_sympal_site->description;
 
-It would be ideal to just change this value in your `app.yml` for the application. 
-Edit `apps/site_name/config/app.yml` and place the following YAML inside.
+## Themes
+
+Each site will likely need its own layout and set of stylesheets and javascripts.
+In symfony, this is determined largely in the view.yml file of an application.
+Sympal, on the other hand, introduces the idea of a theme.
+
+A theme consists of a layout, stylsheets, javascripts and a few other minor
+options. A project can have multiple themes and each site (and even page)
+can use a different theme.
+
+To set the default theme that should be used for an entire sympal site,
+modify the `app.yml` file in the `config` directory of your application:
 
     [yml]
     all:
       sympal_config:
-        default_layout: layout
+        theme:
+          default_theme:  wordpress
 
-> **TIP**
-> You can see what options are available to go under `sympal_config` by looking 
-> at the default `app.yml` which comes with `sfSympalPlugin`. Take a look in
-> `plugins/sfSympalPlugin/config/app.yml` to learn what is available.
-
-You can also change the layout the site uses by editing the site record in the 
-database. There you will find a property named `layout` and the value of
-this property is used whenever you are in that site. This value can be
-overridden at a higher level by content types and content records.
+Themes will be explained in greater detail in another chapter.
