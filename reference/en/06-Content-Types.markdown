@@ -1,10 +1,63 @@
-# Introduction
+# What is a Content Type?
 
-Content types in Sympal are managed solely through installing and uninstalling
-plugins. A Sympal plugin can bundle a new Content type and when installed it 
+On the web, every page of a site contains a different set of information.
+And while this information is unique, most sites can be divided into a finite
+number of "page types". For example, a restaurant site may consist of basic
+information pages, blog posts, and pages describing their menu.
+
+<div style="text-align:center;">
+  [asset:documentation-1-0-page-types]
+</div>
+
+Sympal's approach to this problem is no different than your normal dynamic
+web application. The three different "page types" would be represented by
+three different models in the database. For example, these page types could
+be represented by the following models.
+
+<div style="text-align:center;">
+  [asset:documentation-1-0-content-types]
+</div>
+
+Each model would be setup to hold all of the content needed to render that
+type of page. This is a common and age-old strategy that is given the
+name "content types" inside sympal. The `sfSympalMenuPage`, for example,
+might look like this:
+
+    [yml]
+    sfSympalMenuPage:
+      actAs: [sfSympalContentTypeTemplate]
+      columns:
+        id:
+        title:       string(255)
+        hours:       string(255)
+        description: clob
+      relations:
+        Dishes:
+          class:    sfSympalMenuDish
+          foreign:  menu_id
+          onDelete: cascade
+
+    sfSympalMenuDish:
+      columns:
+        id:
+        name:        string(255)
+        description: clob
+        price:       double
+
+Besides the `actAs: [sfSympalContentTypeTemplate]` line, which will be
+explained below, content types are nothing more than normal models that
+are used to render a page on your website.
+
+In a later chapter, we'll talk about how to create one or more templates
+to render each content (page) type. In these templates, you'll have access
+to your content type model (e.g. `sfSympalMenuPage`) in the same way that
+you would in a normal symfony application.
+
+# Creating New Types
+
+Content types in sympal are managed solely through installing and uninstalling
+plugins. A sympal plugin can bundle a new Content type and when installed it 
 will make this new type available.
-
-# Create New Types
 
 If you wish to create a new content type then you must first generate a new 
 plugin to host your content type. You can do this by running the following
