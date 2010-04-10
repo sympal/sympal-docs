@@ -1,66 +1,97 @@
-Everything in Sympal was designed to be as configurable as possible. This
+Everything in sympal was designed to be as configurable as possible. This
 is why  the `sfSympalConfig` class was introduced. It is an extension of
-`sfConfig` made specifically for Sympal.
+`sfConfig` made specifically for sympal.
 
-The configuration values are organized in to groups so that groups of
-configurations can be specified. This is useful if a Sympal plugin introduces
-several new configurations then they will be all in one group and won't be
-all grouped together.
+All of sympal's configuration is ultimately housed in an `app.yml` file,
+which is a standard symfony practice. Each configuration value lives
+somewhere beneath the `app_sympal_config` configuration key.
 
-## Manipulating
+The `sfSympalConfig` class was introduced to ease the retrieval and manipulation
+of all of the values beneath `app_sympal_config`. It works through symfony's
+native configuration but makes life easier when working with sympal configuration.
 
-You can easily manipulate the Sympal configuration by using the `sfSympalConfig`
-class.
+## Groups and Values
+
+Beneath the `app_sympal_config` config key, many configuration values are
+organized into groups. For example, consider the following piece
+of sympal's main configuration file, found inside `config/app.yml`:
+
+    [yml]
+    all:
+      sympal_config:
+        rows_per_page: 20
+        
+        offline:
+          enabled: false
+          module: sympal_default
+          action: offline
+
+In this example, `rows_per_page` does _not_ appear in a group. However,
+the `enabled`, `module`, and `action` config keys live inside the `offline`
+group.
+
+Most of sympal's configuration exists inside a group, which helps the configuration
+stay organized both in the code and in the admin area. As we'll show next,
+configuration values are retrieved and set differently depending on whether
+or not they live inside a group.
+
+## Manipulating and Retriving configuration
+
+You can easily manipulate and modify the sympal configuration by using
+the `sfSympalConfig` class.
 
 ### Setting
 
-Setting Sympal configuration values is the same as sfConfig.
+Setting sympal configuration values is very similar to sfConfig. As mentioned
+above, the exact syntax depends on whether or not the configuration is
+organized into a group.
 
     [php]
-    echo sfSympalConfig::set('rows_per_page', '20');
+    // For top-level configuration
+    sfSympalConfig::set('rows_per_page', '20');
+
+    // For configuration inside the group "offline"
+    sfSympalConfig::set('offline', 'enabled', true);
 
 ### Getting
 
-Getting Sympal configuration values is also the same as `sfConfig`:
+Getting Sympal configuration values is also similar to `sfConfig`:
 
     [php]
-    echo sfSympalConfig::get('rows_per_page');
+    // For top-level configuration
+    echo sfSympalConfig::get('rows_per_page', null, 20);
+
+    // For configuration inside the group "offline"
+    echo sfSympalConfig::get('offline', 'enabled', true);
+
+In the above example, `20` is the default value returned if the `rows_per_page`
+configuration value does not exist. Similarly, `true` is the default value
+returned if the `offline/enabled` configuration value does not exist.
 
 ### Writing
 
 You can write new settings to disk by using the `writeSetting` method.
-The arguments for this method are the same as the `set` method the only
-difference is that the value is set in memory but it is also written to
-disk so that it is remembered.
+The arguments for this method are the same as the `set` method. The only
+difference is that the value is physically written to disk as well as
+saved in memory.
 
     [php]
-    sfSympalConfig::writeSetting('installed', true);
+    // For top-level configuration
+    sfSympalConfig::writeSetting('rows_per_page', 20);
 
-### Groups
-
-Sympal configuration can be organized in to groups. Up until now we've
-only worked with root level configurations but now we'll show you how to
-set and get values from a group.
-
-    [php]
-    sfSympalConfig::set('new_group', 'name', 'value');
-
-### Default Values
-
-You can also specify default values in the same way you do for `sfConfig`.
-
-    [php]
-    sfSympalConfig::get('new_group', 'name', 'default_value');
+    // For configuration inside the group "offline"
+    sfSympalConfig::writeSetting('offline', 'enabled', true);
 
 ## Configuration Files
 
-All of the values for `sfSympalConfig` can have default values specified
-by the `app.yml`. If you are already familiar with Symfony then you should
-know what this is. The `app.yml` is where all project specific configuration
-can be stored and accessed from `sfConfig`. All of the Sympal configuration
-values are stored under the key named `sympal_settings`. Below is an example
-where we change some of the default values set by Sympal in our
-`config/app.yml` file:
+Sympal comes packaged with sensible defaults for all of the configuration
+values. These defaults can be easily customized by creating an `app.yml`
+file in either the `config` directory of your project. If you're running
+multiple sites from your sympal project, the `app.yml` file can be placed
+in the `config` directory of an application for site-specific defaults.
+
+Below is an example where we change some of the default values set by
+sympal in our `config/app.yml` file:
 
     [yml]
     all:
@@ -79,22 +110,27 @@ where we change some of the default values set by Sympal in our
 
 ## Web Editable Configuration
 
-Some of these configuration values are things that can be changed and
-modified after Sympal has been installed. In the case of these values you
-may want to allow them to be edited from within Sympal in your browser.
+Many of these configuration values are things that can be changed and
+modified after sympal has been installed. For many of these values, you
+may want to allow a CMS user to be able to edit them from within sympal
+in their browser.
 
-If you login to Sympal as an administrator and browse to
-**Administrator > Configuration**, you will see a form that lets you edit
+If you login to sympal as an administrator and browse to
+**Global Setup > System Settings**, you will see a form that lets you edit
 certain configuration values.
 
 [asset:48]
 
 This form is dynamically built through the firing of an event named
 `sympal.load_config_form`. You can connect to this event from anywhere and
-add new editable configurations to the form. Below is an example.
+add new editable configurations to the form. Below is an example of doing
+this from inside a plugin configuration file:
 
     [php]
-    $dispatcher->connect('sympal.load_config_form', array($this, 'loadConfig'));
+    public function initialize()
+    {
+      $dispatcher->connect('sympal.load_config_form', array($this, 'loadConfig'));
+    }
 
     public function loadConfig(sfEvent $event)
     {
