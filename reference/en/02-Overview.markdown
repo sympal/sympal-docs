@@ -34,34 +34,54 @@ This is known as the "type model".
 
 The type model is automatically instantiated and added as a relationship.
 In the above example, the `sfSympalContent` record will have a one-to-one
-relationship with an `sfSympalPage` record. In fact, with some magic, the
-properties/fields of the content type model can be accessed from
-the content record. For example the `sfSympalPage` content type has a
-property named `title` and it can be manipulated from the content record:
+relationship with an `sfSympalPage` record.
+
+[asset:content_model_diagram]
+
+With some magic, the properties/fields of the content type model
+can be accessed from the content record. For example the `sfSympalPage`
+content type has a property named `title` and it can be manipulated or
+retrieved from the `sfSympalContent` record:
 
     [php]
+    // equivalent to $content->sfSympalPage->setTitle('Sample title');
     $content->setTitle('Sample title');
-    
-    echo $content->getTitle();    // reads from the title field on sfSympalPage
+
+    // equivalent to $content->sfSympalPage->getTitle();
+    echo $content->getTitle();
 
 ### Content Slots
 
-In addition to the content type record, each content record has a many
-relationship to `sfSympalContentSlot`. This allows arbitrary areas of
-data to be defined and added to a template without having to modify the
-schema in your database.
+In addition to the content type record, each content record (`sfSympalContent`)
+has a many relationship to `sfSympalContentSlot`. This allows arbitrary
+areas of data to be defined and added to a template without having to
+modify the schema in your database.
 
 You can define these slots by using the `get_sympal_content_slot()` helper:
 
     [php]
-    <h1><?php echo get_sympal_content_slot($content, 'title') ?></h1>
+    <h1><?php echo get_sympal_content_slot('title') ?></h1>
 
-    <?php echo get_sympal_content_slot($content, 'body') ?>
+    <?php echo get_sympal_content_slot('body') ?>
 
 In the above example the first slot renders the title property of the
 content type record and the second is a `sfSympalContentSlot` record
 with a name of `body`. If the slot does not exist it will automatically
 be added.
+
+The idea is simple but powerful. The content type record (e.g. `sfSympalPage`)
+should be designed to contain most of the information/fields you'll need
+to output your page. In the case of the `title` slot, its data is both retrieved
+and saved on the `sfSympalPage` record as you'd expect.
+
+In some cases, however, you may need to store and render an extra field of
+data that does not exist on the content or content type records. In the
+example above, the `body` field doesn't exist on `sfSympalContent` or
+`sfSympalPage`. In these cases, sympal allows you to specify and use this
+extra field without making changes to your model. An `sfSympalContentSlot`
+record will be inserted and will store the value of your extra field.
+When that extra field is rendered, it will be retrieved from the `sfSympalContentSlot`
+record.
 
 Here is a screenshot of the rendered content template for the default
 `sfSympalPage` content type which is very similar to the above example
