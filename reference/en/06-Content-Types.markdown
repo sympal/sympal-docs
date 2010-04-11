@@ -79,12 +79,52 @@ look like the following:
         title: string(255)
         body: clob
 
-> **NOTE**
-> Notice how we have the `sfSympalContentType` behavior enabled. This is
-> how Sympal knows that the model is a content type and not just a regular
-> Doctrine model.
+The addition of the `sfSympalContentType` behavior adds an additional
+column, `content_id` along with a one-to-one foreign relation with the
+`sfSympalContent` model. This relationship forms the basis for how all
+content is rendered inside sympal.
 
-The addition of the behavior above does a few things:
+In fact, as you'll see below, these two objects will act almost as one
+object. Any method called on `sfSympalContent` will be automatically
+called on the related content model unless it exists on `sfSympalContent`.
+For example, if you call `getHours()` on an `sfSympalContent` object of
+type `sfSympalMenuPage`, the value of the `hours` field on `sfSympalMenuPage`
+will be returned.
+
+    [php]
+    $content->getHours();
+
+# Understanding `sfSympalContent` and Content Types
+
+In a normal symfony application, each "page" is represented by a route,
+which directs symfony to a module and action that will render the template
+for that page. While this is still possible in sympal, most pages are
+rendered through a slightly chain of events.
+
+The root of all content in sympal is the `sfSympalContent` model. Unless
+you've decided to create some normal symfony routes as described above,
+every page on your site will be represented by one row in the `sfSympalContent`
+model.
+
+## The role of `sfSympalContent` 
+
+Each `sfSympalContent` record in your database represents one page (unique
+url) on your site. When a request comes in to your site, the following
+chain takes place:
+
+1. A unique `sfSympalContent` record is retrieved based on the incoming url
+1. The content record is joined to the appropriate content type record
+   (e.g. `sfSympalMenuPage`) via the one-to-one relationship established
+   via the `sfSympalContentType` Doctrine behavior.
+1. The correct template is rendered and the `sfSympalContent` is supplied
+   to the template.
+   
+While the above is a simplification, the point is that the `sfSympalContent`
+record does little more than help to determine the unique url for a page
+and join over to the content type model.
+
+When the template is rendered, a the `sfSympalContent` record is available
+via a variable called `$content`.
 
 1. Add a `content_id` foreign key
 2. Relates `sfSympalContent` and `Article` with a one-to-one relationship.
