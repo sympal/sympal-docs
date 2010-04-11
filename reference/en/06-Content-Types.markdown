@@ -55,13 +55,9 @@ you would in a normal symfony application.
 
 # Creating New Types
 
-Content types in sympal are managed solely through installing and uninstalling
-plugins. A sympal plugin can bundle a new Content type and when installed it 
-will make this new type available.
-
-If you wish to create a new content type then you must first generate a new 
-plugin to host your content type. You can do this by running the following
-command.
+As sympal relies heavily on plugins, new content types are commonly placed
+in their own plugin. In fact, sympal makes this very easy to do. To generate
+a new plugin with schema ready for your content type, run the following task:
 
     $ php symfony sympal:plugin-generate Article --content-type=Article
 
@@ -71,10 +67,10 @@ command.
 
 ## Default Schema
 
-A content type is simple, the only requirement is that you enable the model
+A content type is simple. The only requirement is that you enable the model
 behavior named, `sfSympalContentType`. If you take a look at the generated
-code in your plugins directory inside the `sfSympalArticlePlugin` directory
-you will see a `config/doctrine/schema.yml` that looks like the following.
+code in the `config/doctrine/schema.yml` file of the new plugin, it will
+look like the following:
 
     [yml]
     Article:
@@ -90,8 +86,8 @@ you will see a `config/doctrine/schema.yml` that looks like the following.
 
 The addition of the behavior above does a few things:
 
-1. Add a `content_id` foreign key.
-2. Relates `Content` and `Article` with a one-to-one relationship.
+1. Add a `content_id` foreign key
+2. Relates `sfSympalContent` and `Article` with a one-to-one relationship.
 3. Adds sharing of properties/methods between the related records.
 4. Handles automatic creation of the relationship when creating new records.
 
