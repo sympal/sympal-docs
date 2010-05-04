@@ -171,7 +171,7 @@ following command to make everything available:
 
     $ php symfony sympal:plugin-install TestTheme
 
->***NOTE***
+>**NOTE**
 >The above command creates the necessary symbolic link in your web directory
 >to the web directory in the plugin and ensures that the permissions inside
 >the plugin are properly set.
