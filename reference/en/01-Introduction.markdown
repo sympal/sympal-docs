@@ -1,4 +1,4 @@
-Sympal is a Content Management System built on top of the popular MVC
+Sympal is a content management framework built on top of the popular MVC
 framework for PHP, [symfony](http://www.symfony-project.org "symfony").
 
 > **NOTE**
@@ -14,11 +14,18 @@ framework for PHP, [symfony](http://www.symfony-project.org "symfony").
 > [Sensio Labs Books](http://books.sensiolabs.com/), under the title of 
 > "[More with symfony 1.3 & 1.4](http://books.sensiolabs.com/book/9782918390176)"
 
+## What is sympal really?
+
+Sympal is a toolset for creating a content-based website or portion of a
+website. It's a collection of plugins that add to your project, but do not
+take it over. It can be easily added to an existing, symfony project in order
+to add content management functionality.
+
 ## Symfony Plugins
 
-Sympal is intended to be extremely flexible and modular. Due to this, sympal
-is made up of multiple symfony plugins. Below you can find a brief list of
-the plugins which make up the core of sympal.
+Sympal is intended to be extremely flexible and modular. As mentioned above,
+sympal is actually a plugin, `sfSympalPlugin`, which, for organizational
+purposes, comes packaged with a set of core plugins inside of it:
 
 **Core Sympal Plugins**
 
@@ -27,9 +34,7 @@ The core of Sympal is made up of several plugins:
 * **sfSympalPlugin** - The core of sympal containing basic functionality needed by all plugins
 * **sfSympalAdminPlugin** - Backend admin functionality
 * **sfSympalAssetsPlugin** - Assets management functionality
-* **sfSympalCMFPlugin** - Contains the content models and core of the CMf
 * **sfSympalContentListPlugin** - ContentList content type for easily creating lists of content
-* **sfSympalContentSyntaxPlugin** - Interface for transforming content
 * **sfSympalDataGridPlugin** - OO library for creating data grid lists powered by Doctrine
 * **sfSympalEditorPlugin** - Frontend inline editor functionality
 * **sfSympalInstallPlugin** - Web and CLI installation functionality
@@ -39,14 +44,13 @@ The core of Sympal is made up of several plugins:
 * **sfSympalPluginManagerPlugin** - Sympal Plugin Web and CLI installation and management functionality
 * **sfSympalRenderingPlugin** - Render frontend content
 * **sfSympalSearchPlugin** - Search functionality
-* **sfSympalThemePlugin** - Functionality for the creation and switching of themes
 * **sfSympalUpgradePlugin** - Sympal upgrade management
 * **sfSympalUserPlugin** - Additional functionality for sfDoctrineGuardPlugin and use related functionality
 
 **Core Addon Plugins**
 
-In addition to the core sympal plugins, we also bundle some other useful
-and well-known symfony plugins:
+In an effort to reinvent as little as possible, sympal also packages a few
+other, trusted, plugins in its core:
 
 * **sfDoctrineGuardPlugin** - User management
 * **sfFeed2Plugin** - Feed parsing and generation
@@ -55,29 +59,26 @@ and well-known symfony plugins:
 * **sfJqueryReloadedPlugin** - jQuery helpers, etc.
 * **sfTaskExtraPlugin** - Additional useful symfony tasks
 * **sfWebBrowserPlugin** - Required by sfFeed2Plugin
-
-> **NOTE**
-> The above plugins are normal symfony plugins but are included in 
-> sympal because the functionality they provide is very useful both while
-> working with Sympal and in general. We'll discuss these plugins later in
-> more detail.
+* **sfThemePlugin** - symfony theming plugin
+* **sfContentFilterPlugin** - Allows for cached content transformation
+* **sfInlineObjectPlugin** - An inline object syntax
 
 All of these plugins together implement the basic functionality of a content 
 management system as well as an extensible infrastructure so developers
 can add their own content types and plugins easily. Each plugin can also
 easily interact and manipulate other sympal plugins by taking advantage
-of implemented hooks and events which will be discussed later.
+of hooks and events which will be discussed later.
 
 ## Features
-
-**Inline Editing**
-
-The content of each page can be modified inline on the frontend of the
-site. Both the output and the editors for the content can be easily configured.
 
 **Multiple Sites**
 
 Easily manage multiple sites from within one sympal project.
+
+**Inline Editing**
+
+The content of each page can be modified inline on the frontend of the
+site. Both the output and the editors for the content can be configured.
 
 **Page Caching**
 
@@ -125,9 +126,8 @@ The templates used to render content can be configured and overridden at
 multiple levels of sympal. Because of this, the same content can be rendered
 using multiple different templates.
 
-**Layouts**
+**Themes**
 
-The same goes for layouts as templates. You can customize what layout to
-use at multiple levels. For example you can set a global layout, site
-layout, content type layout, or even customize the layout for an individual
-content record. This is the idea of theming.
+The same goes for themes. You can customize what theme to use at multiple
+levels. For example you can set a global theme, site theme, content type
+theme, or even customize the theme for an individual content record.
