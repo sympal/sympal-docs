@@ -10,12 +10,13 @@ content template should be used to render a certain content type or content
 record so we need to configure what templates are available in your
 `config/app.yml`. Below is an example from the core of Sympal where we
 configure the available content templates for the `page` content type
-which uses the
+which uses the the `view` partial of the `sympal_page` module for its
+default view.
 
     [yml]
     all:
       sympal_config:
-        page:
+        sfSympalPage:
           content_templates:
             default_view:
               template: sympal_page/view
