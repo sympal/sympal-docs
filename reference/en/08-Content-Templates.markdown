@@ -1,14 +1,14 @@
-A Sympal content template is just a Symfony partial or component. Inside
+A sympal content template is just a symfony partial or component. Inside
 a content template you render the data for a content type as HTML. You
-can use some bundled Sympal helpers to define slots for inline editing
+can use some bundled sympal helpers to define slots for inline editing
 and rendering.
 
 ## Configuring Available Templates
 
-Throughout the interface of Sympal you have the ability to choose what
+Throughout the interface of sympal you have the ability to choose what
 content template should be used to render a certain content type or content
 record so we need to configure what templates are available in your
-`config/app.yml`. Below is an example from the core of Sympal where we
+`config/app.yml`. Below is an example from the core of sympal where we
 configure the available content templates for the `page` content type
 which uses the the `view` partial of the `sympal_page` module for its
 default view.
@@ -30,7 +30,7 @@ select box populated with the content templates you configured:
 
 ## Writing Content Templates
 
-A content template is just a Symfony partial so you don't need to know
+A content template is just a symfony partial so you don't need to know
 too much else. The configured template is passed some additional parameters
 which you should know:
 
@@ -62,7 +62,7 @@ as a custom class to render the slot type value!
 
 You can easily define slots in your content templates with the
 `get_sympal_content_slot()` helper function. Using this method to render
-properties and slots for your content record allow Sympal to integrate
+properties and slots for your content record allow sympal to integrate
 with the rendering of these values and implement such functionality as
 inline editing.
 
