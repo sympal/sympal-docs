@@ -58,16 +58,13 @@ which you should know:
 | Name     | Description |
 | ----------- | ----------------- |
 | `$sf_sympal_content` | The `sfSympalContent` instance being rendered. |
+| `$menuItem` | The menu that is related to the content record being rendered. |
 | `$sf_format` | The format being rendered. |
 | `$sf_sympal_site` | The `sfSympalSite` record of your current site. |
 | `$sf_sympal_context` | The `sfSympalContext` instance. |
 
->**NOTE**
->You can also retrieve that is related to the content record being rendered
->via `$sf_sympal_content->getMenuItem()`.
-
 You can make use of these variables in your content templates. Here is
-an example content template which just renders some data from the `$content`
+an example content template which just renders some data from the `$sf_sympal_content`
 variable:
 
     [php]
@@ -128,7 +125,7 @@ Now create a partial named `my_custom_content_template`:
     [php]
     // apps/sympal/modules/sympal_page/templates/_my_custom_content_template.php
 
-    <?php echo get_sympal_breadcrumbs($sf_sympal_content->getMenuItem(), $sf_sympal_content) ?>
+    <?php echo get_sympal_breadcrumbs($menuItem, $sf_sympal_content) ?>
 
     <h1><?php echo get_sympal_content_slot('title') ?></h1>
 
