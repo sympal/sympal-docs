@@ -21,14 +21,13 @@ of sympal's main configuration file, found inside `config/app.yml`:
       sympal_config:
         rows_per_page: 20
         
-        offline:
-          enabled: false
-          module: sympal_default
-          action: offline
+        inline_editing:
+          enabled:            true
+          default_edit_mode:  popup
 
 In this example, `rows_per_page` does _not_ appear in a group. However,
-the `enabled`, `module`, and `action` config keys live inside the `offline`
-group.
+the `enabled` and `default_edit_mode` config keys live inside the
+`inline_editing` group.
 
 Most of sympal's configuration exists inside a group, which helps the configuration
 stay organized both in the code and in the admin area. As we'll show next,
@@ -50,8 +49,8 @@ organized into a group.
     // For top-level configuration
     sfSympalConfig::set('rows_per_page', '20');
 
-    // For configuration inside the group "offline"
-    sfSympalConfig::set('offline', 'enabled', true);
+    // For configuration inside the group "inline_editing"
+    sfSympalConfig::set('inline_editing', 'enabled', true);
 
 ### Getting
 
@@ -61,12 +60,13 @@ Getting Sympal configuration values is also similar to `sfConfig`:
     // For top-level configuration
     echo sfSympalConfig::get('rows_per_page', null, 20);
 
-    // For configuration inside the group "offline"
-    echo sfSympalConfig::get('offline', 'enabled', true);
+    // For configuration inside the group "inline_editing"
+    echo sfSympalConfig::get('inline_editing', 'enabled', true);
 
 In the above example, `20` is the default value returned if the `rows_per_page`
 configuration value does not exist. Similarly, `true` is the default value
-returned if the `offline/enabled` configuration value does not exist.
+returned if the `enabled` configuration value of the `inline_editing`
+group does not exist.
 
 ### Writing
 
@@ -79,8 +79,8 @@ saved in memory.
     // For top-level configuration
     sfSympalConfig::writeSetting('rows_per_page', 20);
 
-    // For configuration inside the group "offline"
-    sfSympalConfig::writeSetting('offline', 'enabled', true);
+    // For configuration inside the group "inline_editing"
+    sfSympalConfig::writeSetting('inline_editing', 'enabled', true);
 
 ## Configuration Files
 
