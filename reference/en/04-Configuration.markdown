@@ -47,7 +47,7 @@ organized into a group.
 
     [php]
     // For top-level configuration
-    sfSympalConfig::set('rows_per_page', '20');
+    sfSympalConfig::set('rows_per_page', 20);
 
     // For configuration inside the group "inline_editing"
     sfSympalConfig::set('inline_editing', 'enabled', true);
